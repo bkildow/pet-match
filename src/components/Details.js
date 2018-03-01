@@ -2,12 +2,11 @@ import React, { Component } from "react";
 
 class Details extends Component {
   render() {
+    const { nickname, photo, description } = this.props;
     return (
       <div>
-        <h2>{this.props.nickname}</h2>
-        {this.props.photo && (
-          <img src={this.props.photo} alt={this.props.nickname} />
-        )}
+        <h2>{nickname}</h2>
+        {photo && <img src={photo} alt={nickname} />}
         <p>{this.props.description}</p>
       </div>
     );

@@ -3,6 +3,8 @@ import get from "lodash/get";
 import Details from "./components/Details";
 import "./App.css";
 import Zipcode from "./components/Zipcode";
+import SubmitButton from "./components/SubmitButton";
+import AnimalSelect from "./components/AnimalSelect";
 
 class App extends Component {
   constructor(props) {
@@ -12,7 +14,9 @@ class App extends Component {
       isLoaded: false,
       photo: null,
       nickname: null,
-      description: null
+      description: null,
+      zip: null,
+      animal: "dog"
     };
   }
 
@@ -21,8 +25,10 @@ class App extends Component {
   }
 
   fetchData() {
+    const { zip, animal } = this.state;
     const key = process.env.REACT_APP_API_KEY;
-    let url = `/pet.getRandom?key=${key}&format=json&output=basic&animal=dog&location=43081`;
+    const location = zip ? `&location=${zip}` : "";
+    let url = `/pet.getRandom?key=${key}&format=json&output=basic&animal=${animal}${location}`;
     fetch(url)
       .then(res => res.json())
       .then(
@@ -44,6 +50,18 @@ class App extends Component {
       );
   }
 
+  handleZipChange = zip => {
+    this.setState({ zip });
+  };
+
+  handleSubmitButtonClick = () => {
+    this.fetchData();
+  };
+
+  handleAnimalOnChange = animal => {
+    this.setState({ animal });
+  };
+
   render() {
     const { error, isLoaded, nickname, photo, description } = this.state;
     if (error) {
@@ -52,16 +70,29 @@ class App extends Component {
       return <div>Loading...</div>;
     } else {
       return (
-        <div className="App">
-          <header className="App-header">
-            <h1 className="App-title">Welcome to Pet Match</h1>
-          </header>
-          <Zipcode />
-          <Details
-            nickname={nickname}
-            photo={photo}
-            description={description}
-          />
+        <div className="App container">
+          <div className="row">
+            <div className="column-12">
+              <form>
+                <Zipcode
+                  handleZipChange={this.handleZipChange}
+                  value={this.state.zip}
+                />
+                <AnimalSelect
+                  value={this.state.animal}
+                  onChange={this.handleAnimalOnChange}
+                />
+                <SubmitButton
+                  handleSubmitButtonClick={this.handleSubmitButtonClick}
+                />
+              </form>
+              <Details
+                nickname={nickname}
+                photo={photo}
+                description={description}
+              />
+            </div>
+          </div>
         </div>
       );
     }

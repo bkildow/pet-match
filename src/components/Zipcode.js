@@ -1,12 +1,20 @@
 import React, { Component } from "react";
 
 class Zipcode extends Component {
+  handleZipChange = e => {
+    this.props.handleZipChange(e.target.value);
+  };
+
   render() {
     return (
-      <div>
-        <label for="zip">Zip: </label>
-        <input name="zip" />
-      </div>
+      <label>
+        Zip:
+        <input
+          name="zip"
+          onChange={this.handleZipChange}
+          value={this.props.zip}
+        />
+      </label>
     );
   }
 }

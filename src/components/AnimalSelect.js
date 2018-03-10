@@ -1,18 +1,26 @@
 import React, { Component } from "react";
+import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 
 class AnimalSelect extends Component {
+  handleOnChange = e => {
+    this.props.onChange(e.target.value);
+  };
+
   render() {
-    const { value, onChange } = this.props;
+    const { value } = this.props;
     return (
-      <div className="form-group">
-        <label>
-          Animal:
-          <select className="form-control" value={value} onChange={onChange}>
-            <option value="dog">Dog</option>
-            <option value="cat">Cat</option>
-          </select>
-        </label>
-      </div>
+      <FormGroup controlId="animalSelect">
+        <ControlLabel>Animal:</ControlLabel>
+        <FormControl
+          componentClass="select"
+          placeholder="select animal"
+          value={value}
+          onChange={this.handleOnChange}
+        >
+          <option value="dog">Dog</option>
+          <option value="cat">Cat</option>
+        </FormControl>
+      </FormGroup>
     );
   }
 }

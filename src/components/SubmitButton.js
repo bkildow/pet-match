@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Button } from "react-bootstrap";
 
 class SubmitButton extends Component {
   handleOnClick = e => {
@@ -8,7 +9,9 @@ class SubmitButton extends Component {
 
   render() {
     return (
-      <input type="submit" value={"Match me!"} onClick={this.handleOnClick} />
+      <Button type="submit" onClick={this.handleOnClick}>
+        Match me!
+      </Button>
     );
   }
 }

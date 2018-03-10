@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { FormGroup, ControlLabel, FormControl } from "react-bootstrap";
 
 class Zipcode extends Component {
   handleZipChange = e => {
@@ -7,14 +8,14 @@ class Zipcode extends Component {
 
   render() {
     return (
-      <label>
-        Zip:
-        <input
-          name="zip"
+      <FormGroup controlId="zip">
+        <ControlLabel>Zip:</ControlLabel>
+        <FormControl
+          type="text"
           onChange={this.handleZipChange}
           value={this.props.zip}
         />
-      </label>
+      </FormGroup>
     );
   }
 }

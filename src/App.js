@@ -1,10 +1,12 @@
 import React, { Component } from "react";
 import get from "lodash/get";
 import Details from "./components/Details";
-import "./App.css";
 import Zipcode from "./components/Zipcode";
 import SubmitButton from "./components/SubmitButton";
 import AnimalSelect from "./components/AnimalSelect";
+import Header from "./components/Header";
+import Spinner from "react-svg-spinner";
+import { Form, Well } from "react-bootstrap";
 
 class App extends Component {
   constructor(props) {
@@ -36,7 +38,7 @@ class App extends Component {
           const data = result.petfinder.pet;
           this.setState({
             isLoaded: true,
-            photo: get(data, 'media.photos.photo[3]["$t"]', null),
+            photo: get(data, 'media.photos.photo[2]["$t"]', null),
             nickname: get(data, 'name["$t"]', null),
             description: get(data, 'description["$t"]', null)
           });
@@ -67,32 +69,31 @@ class App extends Component {
     if (error) {
       return <div>Error: {error.message}</div>;
     } else if (!isLoaded) {
-      return <div>Loading...</div>;
+      return <Spinner size="100px" />;
     } else {
       return (
         <div className="App container">
-          <div className="row">
-            <div className="column-12">
-              <form>
-                <Zipcode
-                  handleZipChange={this.handleZipChange}
-                  value={this.state.zip}
-                />
-                <AnimalSelect
-                  value={this.state.animal}
-                  onChange={this.handleAnimalOnChange}
-                />
-                <SubmitButton
-                  handleSubmitButtonClick={this.handleSubmitButtonClick}
-                />
-              </form>
-              <Details
-                nickname={nickname}
-                photo={photo}
-                description={description}
+          <Header />
+          <Well>
+            <Form inline>
+              <Zipcode
+                handleZipChange={this.handleZipChange}
+                value={this.state.zip}
               />
-            </div>
-          </div>
+              <AnimalSelect
+                value={this.state.animal}
+                onChange={this.handleAnimalOnChange}
+              />
+              <SubmitButton
+                handleSubmitButtonClick={this.handleSubmitButtonClick}
+              />
+            </Form>
+          </Well>
+          <Details
+            nickname={nickname}
+            photo={photo}
+            description={description}
+          />
         </div>
       );
     }

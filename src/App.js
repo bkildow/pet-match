@@ -26,30 +26,29 @@ class App extends Component {
     this.fetchData();
   }
 
-  fetchData() {
+  async fetchData() {
     const { zip, animal } = this.state;
     const key = process.env.REACT_APP_API_KEY;
     const location = zip ? `&location=${zip}` : "";
     let url = `/pet.getRandom?key=${key}&format=json&output=basic&animal=${animal}${location}`;
-    fetch(url)
-      .then(res => res.json())
-      .then(
-        result => {
-          const data = result.petfinder.pet;
-          this.setState({
-            isLoaded: true,
-            photo: get(data, 'media.photos.photo[2]["$t"]', null),
-            nickname: get(data, 'name["$t"]', null),
-            description: get(data, 'description["$t"]', null)
-          });
-        },
-        error => {
-          this.setState({
-            isLoaded: true,
-            error
-          });
-        }
-      );
+
+    try {
+      let response = await fetch(url);
+      let result = await response.json();
+
+      const data = result.petfinder.pet;
+      this.setState({
+        isLoaded: true,
+        photo: get(data, 'media.photos.photo[2]["$t"]', null),
+        nickname: get(data, 'name["$t"]', null),
+        description: get(data, 'description["$t"]', null)
+      });
+    } catch (error) {
+      this.setState({
+        isLoaded: true,
+        error
+      });
+    }
   }
 
   handleZipChange = zip => {
